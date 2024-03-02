@@ -1,6 +1,6 @@
 <h1>Basic Spotify Data Analysis</h1>
 <p>It is a simple application with Minimum User Interface</p>
-<p>The Index page provides the Information of TOP 10 Best Streaming Songs of 2023 along with Cover URL</p>
+<p>The Index page provides the Information of TOP 10 Best Streaming Songs of 2023 along with Cover Image</p>
 <p>The Dataset is picked from <b>KAGGLE</b> that consists of 25 Columns and 953 Rows </p>
 <h2>Index Page</h2>
 <img src="https://github.com/phani-x507/Spotify-Data-Analysis/assets/128954663/5819aeef-7282-4e93-b07e-38450e4ac0ea">
@@ -14,12 +14,14 @@
 
 
 <h3>Univariate Analysis Page</h3>
+<img src="https://github.com/phani-x507/Spotify-Data-Analysis/assets/128954663/956972a9-c349-4bca-8606-76eb49adb5ce" >
+<h3>Univariate Analysis CountPlot</h3>
 <img src="https://github.com/phani-x507/Spotify-Data-Analysis/assets/128954663/75ffcd38-bb1f-4a9d-9ea8-faed6c6ddac7" >
 
 ----------------------------------------------------------------------------------
-Do not need to Pick Any Database
-1. The Dataset is already place inside the res folder
-2. Do not Change the Dataset (Change if it has similar features with similar Datatypes) or it leads to errors
+No need to Pick Any Database
+1. The Dataset is already placed inside the res folder
+2. Do not Change the Dataset (Change if it has similar features and datatypes) or it leads to produce errors
 3. Steps to run the App
    1. Install Python
    2. Install Flask
