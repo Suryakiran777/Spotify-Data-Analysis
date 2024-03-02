@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{{url_for('static',filename = 'main.css')}}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cabin:ital,wght@0,400..700;1,400..700&family=Merriweather+Sans:ital,wght@0,300..800;1,300..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+</head>
+<header>
+    <div class="lead1 borders">
+       
+        <div class="lead_sec1 borders">
+            <div class="lead_sec_1_img borders"><img style="margin-top: 6px;" height="80%" width="100%" src="{{url_for('static',filename='images/Spotify_icon.png')}}" alt=""></div>
+           
+            <h1 class="borders"> SPOTIFY DATA ANALYSIS</h1>
+        </div>
+
+
+
+        <div class="lead_sec2 borders">
+            <div class="lead_sec2_1 borders">
+               <form action="/bst_songs">
+                <button style="background-color: transparent;border:0px solid transparent;border-radius: 0px 0px 15px 15px;cursor: pointer;"> <img style="margin: 10px;" height="20px" width="20px" src="{{url_for('static',filename='images/analytics.png')}}" alt=""> <b style="font-size: 15px; color: white;" >Best Streaming 2023</b></button>
+               </form>
+            </div>
+        </div>
+        <div class="lead_sec3 borders">
+            <button class="b1 borders">1980 to 2020 Analysis</button>
+           
+        </div>
+
+    </div>
+</header>
+<body>
+    
+<div class="body_div borders"><form action="/dist_analysis2023" method="post"> 
+    <h2 style="margin: 10px 15px 5px 15px;"> Covariance Analysis  ==>  <button style="margin-left: 10px;margin-top: 0px;" class="analysis_btn">Univariate Analysis</button> </h2></form>
+     
+    <br>
+    <div style="display: flex;" class="borders">
+       <div class="covar_div borders">
+        <img height="100%" width="100%" src="{{url_for('static',filename='images/plots/covar.png')}}" alt="">
+       </div>
+       <div class="sel_covar_div">
+        <h2>Relation b/w Two Variables</h2>
+        <div style="margin-bottom: 4px;border: 1px solid lavender;background-color: lavender;border-radius: 5px 5px 5px 5px ; overflow-x: scroll;" class="borders">
+            <table width="1500px">
+                <tr>
+                    <td>
+                    <form action="/get_covar_percentage" method="post">
+                    {% for keys in covar_keys %}
+                    <input checked class="custom_radio0" type="radio" name="covar_sel1" id="" title="" value="{{keys}}">{{keys}}
+                        {% endfor %}
+                </td>
+                </tr>
+                <tr>
+                    <td><h3 style="margin-bottom: 0px;">.   VS     .</h3></td>
+            </table>
+
+        </div>
+        <div class="sel_covar_div1 borders">
+            <div class="sel_covar_div1_1 borders">
+         {% for keys in covar_keys %}
+        <input checked class="custom_radio1" type="radio" name="covar_sel2" id="" title="" value="{{keys}}">{{keys}}<br>
+        {% endfor %}             
+            </div>
+
+            <div class="sel_covar_result_div borders">
+                <h3 style="margin-bottom: 0px; margin-left: 15px;">Percentage b/w (<small>{{val1}} & {{val2}} </small>)</h3>
+                <div class="covar_percentage borders">
+                    <div style="width: {{covar_percentage}}%;" class="covar_inner_percentage borders">
+                        <h2 style="margin-top: 50px;text-align: center;">{{covar_percentage}}%</h2>
+                        <p style="text-align: center;" ><small>{{val3}}</small></p>
+                    </div>
+                </div>
+                
+                    <button style="margin-left: 130px;margin-top: 30px;" class="analysis_btn">Get Percentage</button>
+                </form>
+            </div>
+
+        </div>
+
+       </div>
+        
+    </div>
+    <h1 style="margin: 10px 15px 5px 15px;"> Relation Plots </h1><br>
+    <div style="display: flex;height: 600px;" class="borders">
+    
+        <div class="rel_plot_div borders">
+            <img style="background-size:cover;" height="100%" width="100%" src="{{url_for('static',filename = 'images/plots/rel_line1.png')}}" alt="">
+        </div>
+        <div  style="box-shadow: 0px 0px 15px 1px lavender;border: 1px solid pink ; width: 50%;"  class="borders">
+            <div class="scatterplot_div borders">
+                <img  height="100%" width="100%"   style="background-size: cover;" src="{{url_for('static',filename='images/plots/rel_scatter1.png')}}" alt="">
+            </div>
+            <div class="scatterplot_div borders">
+                <img  height="100%" width="100%"  style="background-size: cover;" src="{{url_for('static',filename='images/plots/rel_rel1.png')}}" alt="">
+            </div>
+        
+        </div>
+    </div>
+    <!-- <h1 style="margin: 10px 15px 5px 15px;"> Distribution Plots </h1><br>
+    <div style="display: flex;height: 600px;" class="borders">
+    
+       
+        <div style="width: 50%;"  class="borders">
+            <div class="scatterplot_div borders">
+                <img  height="100%" width="100%"   style="background-size: cover;" src="{{url_for('static',filename='images/plots/rel_scatter1.png')}}" alt="">
+            </div>
+            <div class="scatterplot_div borders">
+                <img  height="100%" width="100%"  style="background-size: cover;" src="{{url_for('static',filename='images/plots/rel_rel1.png')}}" alt="">
+            </div>
+
+ 
+        </div>
+        <div class="rel_plot_div borders">
+            <img style="background-size:cover;" height="100%" width="100%" src="{{url_for('static',filename = 'images/plots/rel_line1.png')}}" alt="">
+        </div>
+    </div> -->
+</div>    
+</body>
+</html>

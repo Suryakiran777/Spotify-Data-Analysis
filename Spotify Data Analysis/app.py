@@ -5,8 +5,9 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import datetime as dt
+import seaborn as sns
 
-
+  
 # With Classes
 class using_streams:
     dataset_path = ""
@@ -56,12 +57,124 @@ class using_streams:
             return record_dict
         else:
             return "Track Not Found"
+    
+    def heat_map(self):
+        covar_matrix = self.data1.select_dtypes(exclude = 'object').drop(['artist_count','released_month','released_day','in_spotify_charts','in_apple_charts','in_deezer_charts'],axis=1).corr(method = 'pearson').corr(method='pearson')
+        plt.figure(figsize = (25,15))
+        sns.set(font_scale=0.6)
+        plt.figure(dpi=600)
+        sns.heatmap(covar_matrix,vmax = 1, vmin=-1, annot=True)
+        plt.savefig("Spotify Data Analysis/static/images/plots/covar.png",format= 'png')
+        plt.close()
+        
+    def get_cols_covar(self):
+        data1 = self.data1.select_dtypes(exclude = 'object').drop(['artist_count','released_month','released_day','in_spotify_charts','in_apple_charts','in_deezer_charts'],axis=1).corr(method = 'pearson')
+        dict1 = data1.to_dict()
+        keys = []
+        for i in dict1.keys():
+            keys.append(i)
+        return keys  
+             
+    def get_covar_val(self,val1,val2):
+        covar_matrix = self.data1.select_dtypes(exclude = 'object').drop(['artist_count','released_month','released_day','in_spotify_charts','in_apple_charts','in_deezer_charts'],axis=1).corr(method = 'pearson').corr(method='pearson')
+        val = covar_matrix[val1][val2]
+        self.get_relationship_plots(val1,val2)
+        return val
+    
+    def get_relationship_plots(self,val1,val2):
+        data_streams = self.data1.select_dtypes(exclude = 'object').drop(['artist_count','released_month','released_day','in_spotify_charts','in_apple_charts','in_deezer_charts'],axis=1)
+        plt.figure(dpi=600)
+        plt.title("Line Plot")
+        sns.lineplot(x=data_streams[val1],y=data_streams[val2])
+        plt.savefig('Spotify Data Analysis/static/images/plots/rel_line1.png')
+        plt.close()
+        
+        plt.figure(dpi=600)
+        fix,ax = plt.subplots(figsize=(17,6))
+        plt.title("Bar Plot")
+        sns.barplot(x=data_streams[val1],y=data_streams[val2])
+        plt.savefig('Spotify Data Analysis/static/images/plots/rel_bar1.png')
+        plt.close()
+        
+        plt.figure(dpi=600)
+        plt.title("Reg Plot")
+        sns.regplot(x=data_streams[val1],y=data_streams[val2])
+        plt.savefig('Spotify Data Analysis/static/images/plots/rel_reg1.png')
+        plt.close()
+             
+        plt.figure(dpi=600)
+        plt.title("Joint Plot")
+        sns.jointplot(x=data_streams[val1],y=data_streams[val2], kind='scatter')
+        plt.savefig('Spotify Data Analysis/static/images/plots/rel_joint1.png')
+        plt.close()
+        
+        plt.figure(dpi=600)
+        plt.title("Scatter Plot")
+        sns.scatterplot(x=data_streams[val1],y=data_streams[val2])
+        plt.savefig('Spotify Data Analysis/static/images/plots/rel_scatter1.png')
+        plt.close()
+        
+        plt.figure(dpi=600)
+        plt.title("Rel Plot")
+        sns.relplot(x=data_streams[val1],y=data_streams[val2],legend="auto")
+        plt.savefig('Spotify Data Analysis/static/images/plots/rel_rel1.png')
+        plt.close()
+        
+        plt.figure(dpi=600)
+        plt.title("KDE Plot")
+        sns.kdeplot(data = data_streams, x = val1,y=val2)
+        plt.savefig('Spotify Data Analysis/static/images/plots/rel_kde1.png')
+        plt.close()
+        # Distribution Plots
+    def univariate_plots(self,val1):
+        data_streams = self.data1.select_dtypes(exclude = 'object').drop(['artist_count','released_month','released_day','in_spotify_charts','in_apple_charts','in_deezer_charts'],axis=1)
+         # Hist Plot
+        plt.figure(dpi=600)
+        sns.histplot(data = data_streams[val1],kde= True)
+        plt.savefig('Spotify Data Analysis/static/images/plots/univariate/uni_hist.png')
+        plt.close()
+        
+        # KDE Plot
+        plt.figure(dpi=600)
+        sns.kdeplot(data=data_streams, x=val1,common_grid=True)
+        plt.savefig('Spotify Data Analysis/static/images/plots/univariate/uni_KDE.png')
+        plt.close()
+        
+        # PIE Plot
+        x = data_streams[val1].value_counts() 
+        plt.figure(dpi = 600)
+        plt.pie(x.values, 
+        labels=x.index, 
+        autopct='%1.1f%%') 
+        plt.savefig('Spotify Data Analysis/static/images/plots/univariate/uni_PIE.png')
+        plt.close()
+        
+        # Count Plot
+        plt.figure(dpi=800)
+        fig,ax = plt.subplots(figsize=(25,6))
+        sns.countplot(data_streams,x=val1)
+        plt.savefig('Spotify Data Analysis/static/images/plots/univariate/uni_count.png')
+        plt.close()
+        
+        
+             
+             
+             
+             
+             
+             
+             
              
 
 app = Flask(__name__)
 
 using_streams1 = using_streams("Spotify Data Analysis/static/res/dataset2023.csv")
 
+
+
+
+
+# For INDEX PAGE
 @app.route("/top_tracks")
 def top_tracks():
     return using_streams1.top_10()
@@ -105,6 +218,7 @@ def bst_songs():
     return index()
 
 
+
 @app.route("/")
 def index():
     top1 =  using_streams1.top_1()
@@ -112,6 +226,7 @@ def index():
     tracks = top10['track_name']
     streams = top10['streams']
     all_tracks = using_streams1.all_tracks()
+    using_streams1.heat_map()
     return render_template('index.html',top1 = top1 , tracks = tracks,streams = streams,all_tracks = all_tracks)
 
 @app.route("/area")
@@ -122,7 +237,53 @@ def hello():
         artist_name.append(row['artist(s)_name'])
     return artist_name
  
-   
+# ^ For Index Page
+       
+    #For Analysis Page 2023
+    
+@app.route('/get_covar_percentage',methods=['POST','GET'])
+def get_covar_percentage():
+    if request.method == 'POST':
+        val1 = request.form['covar_sel1']
+        val2 = request.form['covar_sel2']
+        val = using_streams1.get_covar_val(val1,val2)
+        covar_keys = using_streams1.get_cols_covar()
+        # Calculate Percentage
+        covar_percentage = int((((val-(-1))/2)*100))
+        # Return only two digits after decimal point
+        val3 = (int(val*100))/100
+        
+        return render_template('analysis2023.html',val1 =val1 ,val2 = val2, val =val,covar_keys=covar_keys,covar_percentage = covar_percentage,val3 = val3)
+
+
+@app.route("/analysis_2023",methods=['GET','POST'])  
+def analysis_2023():
+    covar_keys = using_streams1.get_cols_covar()
+    
+    return render_template("analysis2023.html",covar_keys=covar_keys )
+       
+@app.route('/sel_covar_analysis')
+def sel_covar_analysis():
+    covar_keys = using_streams1.get_cols_covar()
+    
+    return render_template('covar_rel.html',covar_keys=covar_keys)
+       
+@app.route('/dist_analysis2023',methods=['GET','POST'])
+def dist_analysis2023():
+    if request.method == 'POST':
+        covar_keys = using_streams1.get_cols_covar()
+        return render_template('distanalysis2023.html',covar_keys=covar_keys)      
+       
+@app.route('/get_uni_analysis',methods=['GET','POST'])
+def get_uni_analysis():
+    if request.method == 'POST':
+        val1 = request.form['uni_btn1']
+        using_streams1.univariate_plots(val1)
+        covar_keys = using_streams1.get_cols_covar()
+        return render_template('distanalysis2023.html',covar_keys=covar_keys,val1 = val1)      
+       
+       
+       
        
     
 if __name__ == '__main__':

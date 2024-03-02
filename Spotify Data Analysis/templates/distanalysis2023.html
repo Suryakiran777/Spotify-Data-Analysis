@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{{url_for('static',filename = 'main.css')}}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cabin:ital,wght@0,400..700;1,400..700&family=Merriweather+Sans:ital,wght@0,300..800;1,300..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+</head>
+<header>
+    <div class="lead1 borders">
+       
+        <div class="lead_sec1 borders">
+            <div class="lead_sec_1_img borders"><img style="margin-top: 6px;" height="80%" width="100%" src="{{url_for('static',filename='images/Spotify_icon.png')}}" alt=""></div>
+           
+            <h1 class="borders"> SPOTIFY DATA ANALYSIS</h1>
+        </div>
+
+
+
+        <div class="lead_sec2 borders">
+            <div class="lead_sec2_1 borders">
+               <form action="/bst_songs">
+                <button style="background-color: transparent;border:0px solid transparent;border-radius: 0px 0px 15px 15px;cursor: pointer;"> <img style="margin: 10px;" height="20px" width="20px" src="{{url_for('static',filename='images/analytics.png')}}" alt=""> <b style="font-size: 15px; color: white;" >Best Streaming 2023</b></button>
+               </form>
+            </div>
+        </div>
+        <div class="lead_sec3 borders">
+            <button class="b1 borders">1980 to 2020 Analysis</button>
+           
+        </div>
+
+    </div>
+</header>
+<body>
+    
+<div class="body_div borders">
+    
+    <div class="borders">
+        <h1 style="margin: 10px 15px 5px 15px;"> Select Variable for Univariate Analyis </h1><br>
+        <div class="borders" style="width: 100%; ; height: 100px;margin-bottom: 4px;border: 1px solid lavender;background-color: lavender;border-radius: 5px 5px 5px 5px ; overflow-y: scroll ;overflow-x: hidden;" class="borders">
+            <form action="/get_uni_analysis" method='post'>
+            {% for keys in covar_keys %}
+            <button name="uni_btn1" class="distbuttons" value="{{keys}}" >{{keys}}</button>
+            {% endfor %}
+        </form>
+        </div>
+    </div>
+    <!-- {% for keys in covar_keys %}
+    <input checked class="custom_radio0" type="radio" name="covar_sel1" id="" title="" value="{{keys}}">{{keys}}
+        {% endfor %} -->
+     <h1 style="margin: 10px 15px 5px 15px;"> Distribution Plots </h1><br>
+    <div style="display: flex;height: 600px;" class="borders">
+    
+       
+        <div style="width: 50%;"  class="borders">
+            <div class="scatterplot_div borders">
+                <img  height="100%" width="100%"   style="background-size: cover;" src="{{url_for('static',filename='images/plots/univariate/uni_hist.png')}}" alt="">
+            </div>
+            <div class="scatterplot_div borders">
+                <img  height="100%" width="100%"  style="background-size: cover;" src="{{url_for('static',filename='images/plots/univariate/uni_KDE.png')}}" alt="">
+            </div>
+
+ 
+        </div>
+        <div class="rel_plot_div borders">
+            <img style="background-repeat: no-repeat;background-size: cover;background-position: center;" height="100%" width="100%" src="{{url_for('static',filename = 'images/plots/univariate/uni_PIE.png')}}" alt="">
+        </div>
+    </div>
+    <h2 style="margin: 60px 15px 5px 15px;"> Count Plot </h2><br>
+    <div class="borders" style=" border: 1px solid lavender; box-shadow: 0px 0px 15px lavender;border-radius: 5px;margin: auto;width: 95%; height: 500px; margin-top: 0px;" >
+        <img height="100%" width="100%"  style="background-size: cover;" src="{{url_for('static',filename='images/plots/univariate/uni_count.png')}}" alt="">
+    </div>
+</div>    
+</body>
+</html>
