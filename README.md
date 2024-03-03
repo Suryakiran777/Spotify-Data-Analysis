@@ -1,5 +1,4 @@
 <h1>Basic Spotify Data Analysis</h1>
-<p>Comment Lines are NOT INCLUDED(So please understand the code yourself)</p>
 <p>It is a simple application with Minimum User Interface</p>
 <p>The Index page provides the Information of TOP 10 Best Streaming Songs of 2023 along with Cover Image</p>
 <p>The Dataset is picked from <b>KAGGLE</b> that consists of 25 Columns and 953 Rows </p>
