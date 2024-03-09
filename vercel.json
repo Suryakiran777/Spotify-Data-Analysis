@@ -1,0 +1,14 @@
+{
+"builds":[
+{
+"src":"Spotify Data Analysis/app.py",
+"use":"@vercel@python"
+}
+],
+"routes":[
+{
+"src":"/(.*)",
+"dest":"Spotify Data Analysis/app.py"
+}
+]
+}
